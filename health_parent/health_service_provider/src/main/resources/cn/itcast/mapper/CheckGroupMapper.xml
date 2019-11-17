@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itcast.mapper.CheckGroupMapper">
+    <insert id="save" parameterType="cn.itcast.pojo.CheckGroup" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO t_checkgroup
+        VALUES
+        (id,#{code},#{name},#{helpCode},#{sex},#{remark},#{attention})
+    </insert>
+    <insert id="saveCheckGroupAndCheckItem" parameterType="hashmap">
+        INSERT INTO t_checkgroup_checkitem
+        VALUES
+        (#{checkgroup_id},#{checkitem_id})
+    </insert>
+</mapper>

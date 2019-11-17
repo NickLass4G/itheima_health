@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @Author:Administrator
  * @Date: 2019/11/16 20:53
@@ -83,6 +87,11 @@ public class CheckItemController {
         return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkItem);
     }
 
+    /**
+     * 5.修改检查项
+     * @param checkItem
+     * @return
+     */
     @RequestMapping("/update")
     public Result update(@RequestBody CheckItem checkItem){
         try {
@@ -92,5 +101,19 @@ public class CheckItemController {
             return new Result(false,MessageConstant.EDIT_CHECKITEM_FAIL);
         }
         return new Result(true,MessageConstant.EDIT_CHECKITEM_SUCCESS);
+    }
+
+    /**
+     * 6.查询所有检查项
+     * @return
+     */
+    @RequestMapping("/findAll")
+    public Result findAll(){
+        List<CheckItem> checkItemList = checkItemService.findAll();
+        if (checkItemList != null && checkItemList.size() > 0 ){
+            //查询到结果
+            return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkItemList);
+        }
+        return new Result(false,MessageConstant.EDIT_CHECKITEM_FAIL);
     }
 }

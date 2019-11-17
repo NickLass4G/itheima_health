@@ -3,6 +3,8 @@ package cn.itcast.mapper;
 import cn.itcast.pojo.CheckItem;
 import com.github.pagehelper.Page;
 
+import java.util.List;
+
 /**
  * @Author:Administrator
  * @Date: 2019/11/16 21:12
@@ -20,4 +22,6 @@ public interface CheckItemMapper {
     CheckItem findById(int id);
 
     void updateCheckItem(CheckItem checkItem);
+
+    List<CheckItem> findAll();
 }

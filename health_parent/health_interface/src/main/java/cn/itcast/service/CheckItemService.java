@@ -1,7 +1,11 @@
 package cn.itcast.service;
 
 import cn.itcast.entity.PageResult;
-import cn.itcast.pojo.CheckItem; /**
+import cn.itcast.pojo.CheckItem;
+
+import java.util.List;
+
+/**
  * @Author:Administrator
  * @Date: 2019/11/16 21:07
  */
@@ -16,4 +20,6 @@ public interface CheckItemService {
     CheckItem findById(int id);
     //修改checkitem
     void update(CheckItem checkItem);
+    //查询所有检查项
+    List<CheckItem> findAll();
 }

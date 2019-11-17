@@ -58,4 +58,8 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <select id="findAll" resultType="cn.itcast.pojo.CheckItem">
+        SELECT * FROM t_checkitem
+    </select>
 </mapper>

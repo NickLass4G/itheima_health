@@ -10,6 +10,8 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @Author:Administrator
  * @Date: 2019/11/16 21:10
@@ -82,5 +84,14 @@ public class CheckItemServiceImpl implements CheckItemService {
     @Override
     public void update(CheckItem checkItem) {
         checkItemMapper.updateCheckItem(checkItem);
+    }
+
+    /**
+     * 6.c查询所有检查项
+     * @return
+     */
+    @Override
+    public List<CheckItem> findAll() {
+        return checkItemMapper.findAll();
     }
 }
