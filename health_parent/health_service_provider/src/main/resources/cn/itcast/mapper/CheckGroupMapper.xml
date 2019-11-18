@@ -13,4 +13,46 @@
         VALUES
         (#{checkgroup_id},#{checkitem_id})
     </insert>
+    <select id="findPage" parameterType="String" resultType="cn.itcast.pojo.CheckGroup">
+        SELECT * FROM t_checkgroup
+        <if test="value != null and value.length > 0">
+            WHERE code = #{value} or name = #{value} OR helpcode = #{value}
+        </if>
+    </select>
+    <select id="findCheckGroupById" parameterType="int" resultType="cn.itcast.pojo.CheckGroup">
+        SELECT * FROM t_checkgroup WHERE id = #{id}
+    </select>
+    <select id="findCheckItemIdByCheckGroupId" parameterType="int" resultType="int">
+        SELECT checkitem_id FROM t_checkgroup_checkitem WHERE checkGroup_id = #{id}
+    </select>
+    <update id="updateCheckGroup" parameterType="cn.itcast.pojo.CheckGroup">
+        UPDATE t_checkgroup
+        <set>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="code != null">
+                name = #{name},
+            </if>
+            <if test="code != null">
+                helpCode = #{helpCode},
+            </if>
+            <if test="code != null">
+                sex = #{sex},
+            </if>
+            <if test="code != null">
+                remark = #{remark},
+            </if>
+            <if test="code != null">
+                attention = #{attention}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteCheckGroupAndCheckItem" parameterType="int">
+        DELETE FROM t_checkgroup_checkitem WHERE checkgroup_id = #{id}
+    </delete>
+    <delete id="deleteCheckGroupById" parameterType="int">
+        DELETE FROM t_checkgroup WHERE id = #{id}
+    </delete>
 </mapper>

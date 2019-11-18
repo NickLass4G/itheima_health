@@ -267,7 +267,7 @@
                     currentPage: 1,
                     pageSize:10,
                     total:100,
-                    queryString:null,
+                    queryString:'',
                 },
                 dataList: [],//列表数据
                 formData: {},//表单数据
@@ -282,6 +282,27 @@
             methods: {
                 //编辑
                 handleEdit() {
+                    //发送ajax请求
+                    axios.post("/checkgroup/update?checkItemIds="+this.checkitemIds,this.formData)
+                        .then((response)=>{
+                            //请求成功
+                            if (response.data.flag){
+                                //关闭弹窗
+                                this.dialogFormVisible4Edit=false;
+                                //弹出信息提示
+                                this.$message({
+                                   message:response.data.message,
+                                   type:'success'
+                                });
+                                //,重新分页查询
+                                this.findPage();
+                            }else {
+                                //请求失败弹出提示
+                                this.$message.error(response.data.message);
+                            }
+                        });
+
+
                 },
                 //添加
                 handleAdd () {
@@ -308,6 +329,18 @@
                 },
                 //分页查询
                 findPage() {
+                    // 封装ajax请求参数
+                    var param = {
+                        currentPage:this.pagination.currentPage,
+                        pageSize:this.pagination.pageSize,
+                        queryString:this.pagination.queryString
+                    };
+                    // 发送ajax请求
+                    axios.post("/checkgroup/findPage",param).then((response)=>{
+                        // 后台传回的数据total,rows
+                       this.pagination.total = response.data.total;
+                       this.dataList = response.data.rows;
+                    });
                 },
                 // 重置表单
                 resetForm() {
@@ -335,12 +368,72 @@
                 },
                 // 弹出编辑窗口
                 handleUpdate(row) {
+                    // 首先发送ajax请求,查询成功则弹出编辑框
+                    axios.post("/checkgroup/findGroupById?id="+row.id)
+                        .then((response1)=>{
+                           if (response1.data.flag){
+                                //查询成功,弹出编辑框,默认第一个标签,
+                               this.dialogFormVisible4Edit=true;
+                               this.activeName='first';
+                               //第一个标签中数据回显
+                               this.formData=response1.data.data;
+                               //ajax查询所有检查项
+                               axios.get("/checkitem/findAll")
+                                   .then((response2)=>{
+                                       if (response2.data.flag){
+                                           //查询所有检查项成功
+                                           this.tableData=response2.data.data;
+                                           //查询检查组关联的检查项的id
+                                           axios.post("/checkgroup/findCheckItemIdByCheckGroupId?checkGroupId="+row.id)
+                                               .then((response3)=>{
+                                                  if (response3.data.flag){
+                                                      //查询成功,显示为被关联的检查项
+                                                      this.checkitemIds=response3.data.data;
+                                                  }else {
+                                                      //查询失败
+                                                      this.$message.error(response3.data.message);
+                                                  }
+                                               });
+                                       }else {
+                                           //查询所有检查项失败
+                                           this.$message.error(response2.data.message);
+                                       }
+                                   });
+                           }else {
+                               //查询失败
+                               this.$message.error("服务器正忙,请稍后重试!")
+                           }
+                        });
                 },
                 //切换页码
                 handleCurrentChange(currentPage) {
+                    //currentPage为切换后的页码
+                    this.pagination.currentPage=currentPage;
+                    this.findPage();
                 },
                 // 删除
                 handleDelete(row) {
+                    //给出提示
+                    this.$confirm("确定删除吗?","提示",{type:'warning'})
+                        .then(()=>{
+                            //发送ajax请求删除
+                            axios.post("/checkgroup/deleteById?id="+row.id)
+                                .then((response)=>{
+                                   //删除成功
+                                   if (response.data.flag){
+                                       //给出提示
+                                       this.$message({
+                                          message:response.data.message,
+                                          type:'success'
+                                       });
+                                       //重新分页查询
+                                       this.findPage();
+                                   }else {
+                                       //删除失败
+                                       this.$message.error(response.data.message);
+                                   }
+                                });
+                        });
                 }
             }
         })
