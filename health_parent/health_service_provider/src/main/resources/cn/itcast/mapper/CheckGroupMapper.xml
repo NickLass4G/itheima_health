@@ -55,4 +55,7 @@
     <delete id="deleteCheckGroupById" parameterType="int">
         DELETE FROM t_checkgroup WHERE id = #{id}
     </delete>
+    <select id="findAll" resultType="cn.itcast.pojo.CheckGroup">
+        SELECT * FROM t_checkgroup
+    </select>
 </mapper>

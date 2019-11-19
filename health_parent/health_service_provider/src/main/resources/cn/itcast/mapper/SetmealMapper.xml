@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itcast.mapper.SetmealMapper">
+    <insert id="save" parameterType="cn.itcast.pojo.Setmeal" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO t_setmeal
+        VALUES
+        (id,#{name},#{code},#{helpCode},#{sex},#{age},#{price},#{remark},#{attention},#{img})
+    </insert>
+    <insert id="saveSetmealAndCheckGroup" parameterType="hashMap">
+        INSERT INTO t_setmeal_checkgroup
+        VALUES
+        (#{setmeal_id},#{checkgroup_id})
+    </insert>
+    <select id="findPage" parameterType="String" resultType="cn.itcast.pojo.Setmeal">
+        SELECT * FROM t_setmeal
+        <if test="value != null and value.length >0">
+            WHERE code = #{value} or name = #{value} or helpCode = #{value}
+        </if>
+    </select>
+</mapper>

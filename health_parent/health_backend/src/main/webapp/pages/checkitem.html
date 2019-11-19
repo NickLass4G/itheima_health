@@ -358,6 +358,11 @@
                                    this.$message.error(response.data.message);
                                }
                             });
+                    }).catch(()=>{
+                        this.$message({
+                            message:'操作已取消',
+                            type:'info'
+                        });
                     });
                 }
             }

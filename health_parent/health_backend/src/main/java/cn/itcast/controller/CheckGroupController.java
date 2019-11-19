@@ -115,4 +115,19 @@ public class CheckGroupController {
         }
         return new Result(true,MessageConstant.DELETE_CHECKGROUP_SUCCESS);
     }
+
+    /**
+     * 7.查询所有检查组,用于新增套餐表格
+     * @return
+     */
+    @RequestMapping("/findAll")
+    public Result findAll(){
+        try {
+            List<CheckGroup> checkGroupList = checkGroupService.findAll();
+            return new Result(true,MessageConstant.QUERY_CHECKGROUP_SUCCESS,checkGroupList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,MessageConstant.QUERY_CHECKGROUP_FAIL);
+        }
+    }
 }

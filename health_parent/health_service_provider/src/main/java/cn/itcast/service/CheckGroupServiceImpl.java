@@ -98,6 +98,15 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         checkGroupMapper.deleteCheckGroupById(id);
     }
 
+    /**
+     * 7.查询所有检查组
+     * @return
+     */
+    @Override
+    public List<CheckGroup> findAll() {
+        return checkGroupMapper.findAll();
+    }
+
     /*
     * 新建检查组时同时向关联表中插入记录
     * */
