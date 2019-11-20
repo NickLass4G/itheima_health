@@ -31,11 +31,13 @@
         <!-- 指定触发的时间，基于Cron表达式 -->
         <property name="cronExpression">
             <!--
+            <value>0/10 * * * * ?</value>
             <value>0 0 2 * * ?</value>
             -->
-            <value>0/10 * * * * ?</value>
+            <value>0 0 2 * * ?</value>
         </property>
     </bean>
+
     <!-- 注册一个统一的调度工厂，通过这个调度工厂调度任务 -->
     <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <!-- 注入多个触发器 -->
