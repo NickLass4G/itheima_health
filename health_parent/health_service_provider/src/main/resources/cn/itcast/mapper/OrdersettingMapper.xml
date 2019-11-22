@@ -17,4 +17,5 @@
     <select id="findByMonth" parameterType="hashMap" resultType="cn.itcast.pojo.OrderSetting">
         SELECT * from t_ordersetting WHERE orderDate BETWEEN #{dateBegin} AND #{dateEnd}
     </select>
+
 </mapper>

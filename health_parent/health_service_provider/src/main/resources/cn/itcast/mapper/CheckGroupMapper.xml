@@ -58,4 +58,19 @@
     <select id="findAll" resultType="cn.itcast.pojo.CheckGroup">
         SELECT * FROM t_checkgroup
     </select>
+
+    <!--关联检查项-->
+    <resultMap id="checkGroupMap" type="cn.itcast.pojo.CheckGroup">
+        <id column="id" property="id"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="helpCode" property="helpCode"/>
+        <result column="sex" property="sex"/>
+        <result column="remark" property="remark"/>
+        <result column="attention" property="attention"/>
+        <collection property="checkItems" ofType="cn.itcast.pojo.CheckItem" column="id" select="cn.itcast.mapper.CheckItemMapper.findByCheckGroupId" fetchType="eager"/>
+    </resultMap>
+    <select id="findBySetmealId" parameterType="int" resultMap="checkGroupMap">
+        SELECT * FROM t_checkgroup WHERE id IN (SELECT checkgroup_id FROM t_setmeal_checkgroup WHERE setmeal_id = #{setmealId})
+    </select>
 </mapper>

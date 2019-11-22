@@ -74,7 +74,7 @@ public class SetmealController {
             return new Result(true,MessageConstant.ADD_SETMEAL_SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(true,MessageConstant.ADD_SETMEAL_FAIL);
+            return new Result(false,MessageConstant.ADD_SETMEAL_FAIL);
         }
     }
 

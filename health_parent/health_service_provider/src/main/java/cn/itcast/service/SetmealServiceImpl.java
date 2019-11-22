@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.JedisPool;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,6 +54,26 @@ public class SetmealServiceImpl implements SetmealService {
         PageHelper.startPage(currentPage,pageSize);
         Page<Setmeal> page = setmealMapper.findPage(s);
         return new PageResult(page.getTotal(),page.getResult());
+    }
+
+    /**
+     * 移动端后台1:查询所有套餐
+     * @return
+     */
+    @Override
+    public List<Setmeal> findAll() {
+        return setmealMapper.findAll();
+    }
+
+    /**
+     * 移动端后台2:根据id查询
+     * @param id
+     * @return
+     */
+    @Override
+    public Setmeal findById(int id) {
+
+        return setmealMapper.findById(id);
     }
 
     // 将点击保存后的文件名保存到Redis

@@ -62,4 +62,8 @@
     <select id="findAll" resultType="cn.itcast.pojo.CheckItem">
         SELECT * FROM t_checkitem
     </select>
+
+    <select id="findByCheckGroupId" parameterType="int" resultType="cn.itcast.pojo.CheckItem">
+        SELECT * FROM t_checkitem WHERE id IN (SELECT checkitem_id FROM t_checkgroup_checkitem WHERE checkgroup_id = #{checkGroupId})
+    </select>
 </mapper>

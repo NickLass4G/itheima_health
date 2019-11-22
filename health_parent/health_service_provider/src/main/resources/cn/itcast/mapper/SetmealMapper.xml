@@ -19,4 +19,32 @@
             WHERE code = #{value} or name = #{value} or helpCode = #{value}
         </if>
     </select>
+    <select id="findAll" resultType="cn.itcast.pojo.Setmeal">
+        SELECT * FROM t_setmeal
+    </select>
+    <!--他来了他来,多表,对多,对多查询-->
+    <resultMap id="setmealMap" type="cn.itcast.pojo.Setmeal">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="helpCode" property="helpCode"/>
+        <result column="sex" property="sex"/>
+        <result column="age" property="age"/>
+        <result column="price" property="price"/>
+        <result column="remark" property="remark"/>
+        <result column="attention" property="attention"/>
+        <result column="img" property="img"/>
+    </resultMap>
+
+    <resultMap id="setmealCheckGroupMap" type="cn.itcast.pojo.Setmeal" extends="setmealMap">
+        <!--关联查询检查组-->
+        <collection property="checkGroups" ofType="cn.itcast.pojo.CheckGroup"
+                    column="id" select="cn.itcast.mapper.CheckGroupMapper.findBySetmealId"
+                    fetchType="eager"/>
+    </resultMap>
+
+
+    <select id="findById" parameterType="int" resultMap="setmealCheckGroupMap">
+        SELECT * FROM t_setmeal WHERE id = #{id}
+    </select>
 </mapper>
