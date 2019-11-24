@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itcast.mapper.MemberMapper">
+    <!--根据电话号码查询会员-->
+    <select id="findByTel" parameterType="String" resultType="cn.itcast.pojo.Member">
+        SELECT * FROM t_member WHERE phoneNumber = #{value}
+    </select>
+
+    <!--新建会员-->
+    <insert id="save" parameterType="cn.itcast.pojo.Member" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO t_member
+        (fileNumber,name,sex,idCard,phoneNumber,regTime,password,email,birthday,remark)
+        VALUES
+        (#{fileNumber},#{name},#{sex},#{idCard},#{phoneNumber},#{regTime},#{password},#{email},#{birthday},#{remark})
+    </insert>
+</mapper>

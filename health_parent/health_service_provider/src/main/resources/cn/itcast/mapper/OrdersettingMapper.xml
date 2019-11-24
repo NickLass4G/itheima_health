@@ -3,19 +3,30 @@
         PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.itcast.mapper.OrdersettingMapper">
+    <!--新建预约设置-->
     <insert id="save" parameterType="cn.itcast.pojo.OrderSetting">
         INSERT INTO t_ordersetting (orderDate,number,reservations)
         VALUES
         (#{orderDate},#{number},#{reservations})
     </insert>
+
+    <!--根据日期查询预约设置的数量-->
     <select id="findorderSettingCountByDate" parameterType="java.util.Date" resultType="long" >
         SELECT count(*) FROM t_ordersetting WHERE orderDate = #{orderDate}
     </select>
+
+    <!--根据日期修改可预约数量-->
     <update id="updateByDate" parameterType="cn.itcast.pojo.OrderSetting">
         UPDATE t_ordersetting SET number = #{number} WHERE orderDate = #{orderDate}
     </update>
+
+    <!--根据月份查询本月的预约设置-->
     <select id="findByMonth" parameterType="hashMap" resultType="cn.itcast.pojo.OrderSetting">
         SELECT * from t_ordersetting WHERE orderDate BETWEEN #{dateBegin} AND #{dateEnd}
     </select>
 
+    <!--根据日期查询预约设置-->
+    <select id="findOrderSettingByDate" parameterType="java.util.Date" resultType="cn.itcast.pojo.OrderSetting">
+        SELECT * FROM t_ordersetting WHERE orderDate = #{orderDate}
+    </select>
 </mapper>

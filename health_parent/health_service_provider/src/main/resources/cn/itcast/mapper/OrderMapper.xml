@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itcast.mapper.OrderMapper">
+    <!--动态查询order对象-->
+    <select id="findByCondition" parameterType="cn.itcast.pojo.Order" resultType="cn.itcast.pojo.Order">
+        SELECT * FROM t_order
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="memberId != null">
+                and member_id = #{memberId}
+            </if>
+            <if test="orderDate != null">
+                and orderDate = #{orderDate}
+            </if>
+            <if test="orderType != null">
+                and orderType = #{orderType}
+            </if>
+            <if test="orderStatus != null">
+                and orderStatus = #{orderStatus}
+            </if>
+            <if test="setmealId != null">
+                and setmeal_id = #{setmealId}
+            </if>
+        </where>
+    </select>
+
+    <!--新建order-->
+    <insert id="save" parameterType="cn.itcast.pojo.Order" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO t_order
+        (member_id,orderDate,orderType,orderStatus,setmeal_id)
+        VALUES
+        (#{memberId},#{orderDate},#{orderType},#{orderStatus},#{setmealId})
+    </insert>
+
+    <!--根据id查询一堆信息-->
+    <select id="fidnById" parameterType="int" resultType="hashMap">
+        SELECT
+	m.name member,
+	o.orderDate orderDate,
+	o.orderType orderType,
+	s.name setmeal
+	FROM
+	t_member m,
+	t_order o,
+	t_setmeal s
+	WHERE
+	m.id=#{id} AND m.id=o.member_id AND o.setmeal_id=s.id
+    </select>
+</mapper>

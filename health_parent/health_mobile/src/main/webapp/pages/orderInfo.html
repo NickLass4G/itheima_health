@@ -33,7 +33,7 @@
             <div class="contentBox">
                 <div class="card">
                     <div class="">
-                        <img :src="'http://pqjroc654.bkt.clouddn.com/'+setmeal.img" width="100%" height="100%" />
+                        <img :src="'http://q17hq2rli.bkt.clouddn.com/'+setmeal.img" width="100%" height="100%" />
                     </div>
                     <div class="project-text">
                         <h4 class="tit">{{setmeal.name}}</h4>
@@ -113,12 +113,49 @@
                 methods:{
                     //发送验证码
                     sendValidateCode(){
+                        // 获取用户输入的手机号码
+                        var telephone = this.orderInfo.telephone;
+                        // 如果号码格式不正确,给出提示
+                        if (!checkTelephone(telephone)){
+                            this.$message.error("请输入正确的手机号");
+                            return false;
+                        }
+                        // 如果号码格式正确,就显示30秒的倒计时
+                        validateCodeButton = $("#validateCodeButton")[0];
+                        clock = window.setInterval(doLoop,1000);//1s执行一次
+                        // 发送ajax请求,获取验证码
+                        axios.post("/validateCode/send4Order?telephone="+telephone)
+                            .then((response)=>{
+                                if (!response.data.flag){
+                                    this.$message.error("验证码发送失败,请检查手机号码");
+                                }
+                            });
                     },
                     //提交预约
                     submitOrder(){
+                        // 校验身份证的格式
+                        if (!checkIdCard(this.orderInfo.idCard)){
+                            this.$message.error("身份证号码不正确,请重新输入");
+                        }
+                        // 发送ajax预约
+                        axios.post("/order/submit",this.orderInfo).then((response)=>{
+                            // 预约成功,跳转到预约成功的页面
+                            if (response.data.flag){
+                                window.location.href="orderSuccess.html?orderId="+response.data.data;
+                            }else {
+                                // 预约失败,提示预约信息
+                                this.$message.error(response.data.message);
+                            }
+                        });
                     }
                 },
                 mounted(){
+                    // 发送ajax请求根据id查询
+                    axios.post("/setmeal/findById?id="+id).then((response)=>{
+                       if (response.data.flag){
+                           this.setmeal = response.data.data;
+                       }
+                    });
                 }
             });
         </script>
