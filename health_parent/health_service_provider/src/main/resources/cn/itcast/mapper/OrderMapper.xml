@@ -31,13 +31,13 @@
     <!--新建order-->
     <insert id="save" parameterType="cn.itcast.pojo.Order" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         INSERT INTO t_order
-        (member_id,orderDate,orderType,orderStatus,setmeal_id)
+        (id,member_id,orderDate,orderType,orderStatus,setmeal_id)
         VALUES
-        (#{memberId},#{orderDate},#{orderType},#{orderStatus},#{setmealId})
+        (id,#{memberId},#{orderDate},#{orderType},#{orderStatus},#{setmealId})
     </insert>
 
     <!--根据id查询一堆信息-->
-    <select id="fidnById" parameterType="int" resultType="hashMap">
+    <select id="fidnById" parameterType="int" resultType="Map">
         SELECT
 	m.name member,
 	o.orderDate orderDate,
@@ -48,6 +48,6 @@
 	t_order o,
 	t_setmeal s
 	WHERE
-	m.id=#{id} AND m.id=o.member_id AND o.setmeal_id=s.id
+	o.id=#{id} AND m.id=o.member_id AND o.setmeal_id=s.id
     </select>
 </mapper>
