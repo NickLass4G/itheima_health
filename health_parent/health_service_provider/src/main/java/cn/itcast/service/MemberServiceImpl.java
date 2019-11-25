@@ -6,6 +6,9 @@ import com.alibaba.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @Author:Administrator
  * @Date: 2019/11/23 14:04
@@ -35,5 +38,21 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void save(Member member) {
         memberMapper.save(member);
+    }
+
+    /**
+     * 3.根据月份查询会员的数量
+     * @param month
+     * @return
+     */
+    @Override
+    public List<Integer> findMemberCountByMonth(List<String> month) {
+        List<Integer> list = new ArrayList<>();
+        for (String m : month) {
+            m += ".31";// 格式:2019.3.31
+            Integer count = memberMapper.findMemberCountBeforeDate(m);
+            list.add(count);
+        }
+        return list;
     }
 }

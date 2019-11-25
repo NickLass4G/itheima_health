@@ -47,4 +47,18 @@
     <select id="findById" parameterType="int" resultMap="setmealCheckGroupMap">
         SELECT * FROM t_setmeal WHERE id = #{id}
     </select>
+
+    <!--查询套餐预定的数量统计-->
+    <select id="findSetmealCount" resultType="Map">
+      SELECT
+        s.name name,
+        count(o.id) value
+      FROM
+        t_order o,
+        t_setmeal s
+      WHERE
+        o.setmeal_id = s.id
+      GROUP BY
+        s.name
+    </select>
 </mapper>

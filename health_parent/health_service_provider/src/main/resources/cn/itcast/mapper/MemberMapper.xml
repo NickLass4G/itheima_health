@@ -15,4 +15,9 @@
         VALUES
         (#{fileNumber},#{name},#{sex},#{idCard},#{phoneNumber},#{regTime},#{password},#{email},#{birthday},#{remark})
     </insert>
+
+    <!--查询每月的会员的数量-->
+    <select id="findMemberCountBeforeDate" parameterType="String" resultType="int">
+        SELECT count(id) FROM t_member WHERE regTime &lt;= #{value}
+    </select>
 </mapper>

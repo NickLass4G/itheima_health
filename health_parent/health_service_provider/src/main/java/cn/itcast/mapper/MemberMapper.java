@@ -10,4 +10,6 @@ public interface MemberMapper {
     Member findByTel(String telephone);
 
     void save(Member m);
+
+    Integer findMemberCountBeforeDate(String m);
 }

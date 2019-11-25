@@ -76,6 +76,17 @@ public class SetmealServiceImpl implements SetmealService {
         return setmealMapper.findById(id);
     }
 
+    /**
+     * 后台管理端:
+     * 查询套餐预定的数量统计
+     * 用于饼图
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> findSetmealCount() {
+        return setmealMapper.findSetmealCount();
+    }
+
     // 将点击保存后的文件名保存到Redis
     private void savePic2Redis(String img) {
         jedisPool.getResource().sadd(RedisConstant.SETMEAL_PIC_DB_RESOURCES,img);

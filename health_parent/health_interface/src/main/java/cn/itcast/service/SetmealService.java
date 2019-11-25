@@ -4,6 +4,7 @@ import cn.itcast.entity.PageResult;
 import cn.itcast.pojo.Setmeal;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:Administrator
@@ -17,4 +18,7 @@ public interface SetmealService {
     List<Setmeal> findAll();
 
     Setmeal findById(int id);
+
+    List<Map<String,Object>> findSetmealCount();
+
 }
