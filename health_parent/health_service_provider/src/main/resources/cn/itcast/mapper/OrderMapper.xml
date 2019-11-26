@@ -50,4 +50,42 @@
 	WHERE
 	o.id=#{id} AND m.id=o.member_id AND o.setmeal_id=s.id
     </select>
+
+    <!--今日预约数-->
+    <select id="findTodayOrderNumber" parameterType="String" resultType="Long">
+        SELECT count(*) FROM t_order WHERE orderDate = #{value}
+    </select>
+
+    <!--今日到诊数-->
+    <select id="findTodayVisitsNumber" parameterType="String" resultType="Long">
+        SELECT count(*) FROM t_order WHERE orderDate = #{value} AND orderStatus = '已到诊'
+    </select>
+
+    <!--某日期之后的预约数-->
+    <select id="findOrderNumberAfterDate" parameterType="String" resultType="Long">
+        SELECT count(*) FROM t_order WHERE orderDate &gt;= #{value}
+    </select>
+
+    <!--某日期之后的到诊数-->
+    <select id="findVisitsNumberAfterDate" parameterType="String" resultType="Long">
+        SELECT count(*) FROM t_order WHERE orderDate &gt;= #{value} AND orderStatus = '已到诊'
+    </select>
+
+    <!--热门套餐查询-->
+    <select id="findHotSetmeal" resultType="Map">
+    SELECT
+        s.name name,
+        count(o.id) setmeal_count,
+        count(o.id)/(SELECT count(*) FROM t_order) proportion
+	FROM
+        t_order o,
+        t_setmeal s
+	WHERE
+	    o.setmeal_id = s.id
+	GROUP BY
+	    s.name
+	ORDER BY
+	    setmeal_count DESC
+	LIMIT 4
+    </select>
 </mapper>

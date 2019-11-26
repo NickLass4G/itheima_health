@@ -20,4 +20,24 @@
     <select id="findMemberCountBeforeDate" parameterType="String" resultType="int">
         SELECT count(id) FROM t_member WHERE regTime &lt;= #{value}
     </select>
+
+    <!--今日新增会员-->
+    <select id="findTodayNewMember" parameterType="String" resultType="Long">
+        SELECT count(*) FROM t_member where regTime = #{value}
+    </select>
+
+    <!--总会员数-->
+    <select id="findTotalMember" resultType="Long">
+        SELECT count(*) FROM t_member
+    </select>
+
+    <!--本周新增会员数-->
+    <select id="findThisWeekNewMember" parameterType="String" resultType="Long">
+        SELECT count(*) FROM t_member where regTime &gt;= #{value}
+    </select>
+
+    <!--本月新增会员数-->
+    <select id="findThisMonthNewMember" parameterType="String" resultType="Long">
+        SELECT count(*) FROM t_member where regTime &gt;= #{value}
+    </select>
 </mapper>

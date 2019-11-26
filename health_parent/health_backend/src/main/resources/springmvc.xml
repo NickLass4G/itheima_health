@@ -25,9 +25,6 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-
-
-
     <!--3.释放静态资源-->
     <mvc:default-servlet-handler />
     <!-- 指定应用名称 -->

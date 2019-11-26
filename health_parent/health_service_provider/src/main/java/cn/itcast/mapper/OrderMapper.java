@@ -15,4 +15,14 @@ public interface OrderMapper {
     void save(Order order);
 
     Map fidnById(int id);
+
+    Long findTodayOrderNumber(String today);
+
+    Long findTodayVisitsNumber(String today);
+
+    Long findOrderNumberAfterDate(String monday);
+
+    Long findVisitsNumberAfterDate(String monday);
+
+    List<Map<String,Object>> findHotSetmeal();
 }

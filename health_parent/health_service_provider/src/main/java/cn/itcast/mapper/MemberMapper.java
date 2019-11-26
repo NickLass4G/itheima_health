@@ -12,4 +12,12 @@ public interface MemberMapper {
     void save(Member m);
 
     Integer findMemberCountBeforeDate(String m);
+
+    Long findTodayNewMember(String today);
+
+    Long findTotalMember();
+
+    Long findThisWeekNewMember(String monday);
+
+    Long findThisMonthNewMember(String firstDay);
 }
