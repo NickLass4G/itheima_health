@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -90,5 +91,20 @@ public class SetmealController {
                 queryPageBean.getPageSize(),
                 queryPageBean.getQueryString().replaceAll(" ","")
         );
+    }
+
+    /**
+     * 3.查询所有套餐
+     * @return
+     */
+    @RequestMapping("/findAll")
+    public Result findAll(){
+        try {
+            List<Setmeal> setmealList = setmealService.findAll();
+            return new Result(true,MessageConstant.QUERY_SETMEALLIST_SUCCESS,setmealList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,MessageConstant.QUERY_SETMEALLIST_FAIL);
+        }
     }
 }

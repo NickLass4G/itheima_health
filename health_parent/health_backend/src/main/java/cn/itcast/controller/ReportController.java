@@ -2,9 +2,9 @@ package cn.itcast.controller;
 
 import cn.itcast.constant.MessageConstant;
 import cn.itcast.entity.Result;
-import cn.itcast.service.MemberService;
-import cn.itcast.service.ReportService;
-import cn.itcast.service.SetmealService;
+import cn.itcast.pojo.*;
+import cn.itcast.service.*;
+import cn.itcast.utils.DateUtils;
 import com.alibaba.dubbo.config.annotation.Reference;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -39,6 +39,15 @@ public class ReportController {
 
     @Reference
     private ReportService reportService;
+
+    @Reference
+    private OrderService orderService;
+
+    @Reference
+    private CheckGroupService checkGroupService;
+
+    @Reference
+    private CheckItemService checkItemService;
 
     /**
      * 1.会员数量折线图
@@ -181,5 +190,110 @@ public class ReportController {
             e.printStackTrace();
             return new Result(false,MessageConstant.GET_BUSINESS_REPORT_FAIL,null);
         }
+    }
+
+
+    @RequestMapping("/exportMemberDetailInformation")
+    public Result exportMemberDetailInformation(Integer[] ids,HttpServletRequest request, HttpServletResponse response)throws Exception{
+        // 查询出所有勾选的会员
+
+        try {
+            int memberJump = 2;//会员跳的行数,就是所有订单的检查项加起来的行数
+            // 获取Excel文件的绝对路径
+            // File.separator是文件夹与文件之间分隔符,由于Linux与Windows分隔符不同,这个东西可以自己根据系统进行取值
+            String templateRealPath = request.getSession().getServletContext().getRealPath("template")+ File.separator + "member_detail_template.xlsx";
+            // 读取模板文件,创建Excel表格对象并写入数据
+            XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(new File(templateRealPath)));
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            XSSFRow row = null;
+            List<Member> memberList = memberService.findByIds(ids);
+            for (Member member : memberList) {
+                // 1.1将会员信息写进Excel sheet0
+                row = sheet.getRow(memberJump);
+                row.getCell(0).setCellValue(""+member.getFileNumber());
+                row.getCell(1).setCellValue(""+member.getName());
+                row.getCell(2).setCellValue((""+member.getSex()).equals("1")?"男":"女");
+                row.getCell(3).setCellValue(""+member.getIdCard());
+                row.getCell(4).setCellValue(""+member.getPhoneNumber());
+                row.getCell(5).setCellValue(member.getRegTime()==null?null+"":DateUtils.parseDate2String(member.getRegTime()));
+                row.getCell(6).setCellValue(""+member.getPassword());
+                row.getCell(7).setCellValue(""+member.getEmail());
+                row.getCell(8).setCellValue(member.getBirthday()==null?null+"":DateUtils.parseDate2String(member.getBirthday()));
+                row.getCell(9).setCellValue(""+member.getRemark());
+
+                // 1.2
+                List<Order> orderList = orderService.findByMemberId(member.getId());
+                if (orderList == null || orderList.size() <= 0){
+                    memberJump += 1;
+                    continue;
+                }
+                int i = 0;
+                int s= 0;
+                for (Order order : orderList) {
+                    row = sheet.getRow(memberJump+i++);
+                    row.getCell(11).setCellValue(order.getOrderDate()==null?null+"":DateUtils.parseDate2String(order.getOrderDate()));
+                    row.getCell(12).setCellValue(""+order.getOrderType());
+                    row.getCell(13).setCellValue(""+order.getOrderStatus());
+
+                    Setmeal setmeal = setmealService.findByOrderId(order.getId());
+                    row = sheet.getRow(memberJump+s++);
+                    row.getCell(14).setCellValue(""+setmeal.getName());
+                    row.getCell(15).setCellValue(""+setmeal.getCode());
+                    row.getCell(16).setCellValue(""+setmeal.getHelpCode());
+                    row.getCell(17).setCellValue((""+setmeal.getSex()).equals("1")?"男":"女");
+                    row.getCell(18).setCellValue(""+setmeal.getAge());
+                    row.getCell(19).setCellValue(""+setmeal.getPrice());
+                    row.getCell(20).setCellValue(""+setmeal.getRemark());
+                    row.getCell(21).setCellValue(""+setmeal.getAttention());
+                    row.getCell(22).setCellValue(""+setmeal.getImg());
+
+                    int cgl = 0;
+                    //
+                    List<CheckGroup> checkGroupList = checkGroupService.findBySetmealId(setmeal.getId());
+
+                    for (CheckGroup checkGroup : checkGroupList) {
+                        row = sheet.getRow(memberJump+cgl++);
+                        row.getCell(23).setCellValue(""+checkGroup.getCode());
+                        row.getCell(24).setCellValue(""+checkGroup.getName());
+                        row.getCell(25).setCellValue(""+checkGroup.getHelpCode());
+                        row.getCell(26).setCellValue((""+setmeal.getSex()).equals("1")?"男":"女");;
+                        row.getCell(27).setCellValue(""+checkGroup.getRemark());
+                        row.getCell(28).setCellValue(""+checkGroup.getAttention());
+
+                        int cil = 0;
+                        List<CheckItem> checkItemList = checkItemService.findByCheckGroupId(checkGroup.getId());
+                        memberJump += checkItemList.size();
+                        for (CheckItem checkItem : checkItemList) {
+                            row = sheet.getRow(memberJump+cil++);
+                            row.getCell(29).setCellValue(""+checkItem.getCode());
+                            row.getCell(30).setCellValue(""+checkItem.getName());
+                            row.getCell(31).setCellValue((""+checkItem.getSex()).equals("1")?"男":"女");
+                            row.getCell(32).setCellValue(""+checkItem.getAge());
+                            row.getCell(33).setCellValue(""+checkItem.getPrice());
+                            row.getCell(34).setCellValue((""+checkItem.getType()).equals("1")?"检查":"化验");
+
+                            row.getCell(35).setCellValue(""+checkItem.getAttention());
+                            row.getCell(36).setCellValue(""+checkItem.getRemark());
+                        }
+                    }
+                }
+            }
+
+            ServletOutputStream out = response.getOutputStream();
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("content‐Disposition","attachment;filename=report.xlsx");
+            workbook.write(out);
+
+            out.flush();
+            out.close();
+            workbook.close();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false,"无所谓...");
+        }
+
+
+
     }
 }

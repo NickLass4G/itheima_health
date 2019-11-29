@@ -94,4 +94,14 @@ public class CheckItemServiceImpl implements CheckItemService {
     public List<CheckItem> findAll() {
         return checkItemMapper.findAll();
     }
+
+    /**
+     * 7.根据检查组查询检查项
+     * @param checkGroupId
+     * @return
+     */
+    @Override
+    public List<CheckItem> findByCheckGroupId(Integer checkGroupId) {
+        return checkItemMapper.findByCheckGroupId(checkGroupId);
+    }
 }

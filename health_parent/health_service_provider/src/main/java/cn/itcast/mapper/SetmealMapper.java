@@ -20,4 +20,6 @@ public interface SetmealMapper {
     Setmeal findById(int id);
 
     List<Map<String,Object>> findSetmealCount();
+
+    Setmeal findByOrderId(Integer id);
 }

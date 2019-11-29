@@ -73,4 +73,9 @@
     <select id="findBySetmealId" parameterType="int" resultMap="checkGroupMap">
         SELECT * FROM t_checkgroup WHERE id IN (SELECT checkgroup_id FROM t_setmeal_checkgroup WHERE setmeal_id = #{setmealId})
     </select>
+
+    <!--根据套餐id查询-->
+    <select id="findCheckGroupBySetmeaId" parameterType="int" resultType="cn.itcast.pojo.CheckGroup">
+        SELECT * from t_checkgroup WHERE id IN (SELECT checkgroup_id FROM t_setmeal_checkgroup WHERE setmeal_id = #{setmealId})
+    </select>
 </mapper>

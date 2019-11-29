@@ -88,4 +88,14 @@
 	    setmeal_count DESC
 	LIMIT 4
     </select>
+
+    <!--根据会员id删除订单-->
+    <delete id="deleteByMemberId" parameterType="int">
+        DELETE FROM t_order WHERE member_id = #{id}
+    </delete>
+
+    <!--根据会员id查询订单-->
+    <select id="findByMemberId" parameterType="int" resultType="cn.itcast.pojo.Order">
+        SELECT * from t_order WHERE member_id =#{memberId}
+    </select>
 </mapper>

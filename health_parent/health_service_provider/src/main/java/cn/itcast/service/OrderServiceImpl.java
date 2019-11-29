@@ -109,4 +109,14 @@ public class OrderServiceImpl implements OrderService {
         }
         return map;
     }
+
+    /**
+     * 3.根据会员的id查询套餐信息
+     * @param memberId
+     * @return
+     */
+    @Override
+    public List<Order> findByMemberId(int memberId) {
+        return orderMapper.findByMemberId(memberId);
+    }
 }

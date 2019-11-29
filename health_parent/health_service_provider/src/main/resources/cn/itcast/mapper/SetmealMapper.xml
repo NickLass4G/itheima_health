@@ -61,4 +61,9 @@
       GROUP BY
         s.name
     </select>
+
+    <!--根据订单id查询套餐-->
+    <select id="findByOrderId" parameterType="int" resultType="cn.itcast.pojo.Setmeal">
+        SELECT  * from t_setmeal WHERE id = (SELECT setmeal_id FROM t_order where id= #{id})
+    </select>
 </mapper>

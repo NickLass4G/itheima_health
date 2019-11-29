@@ -25,4 +25,8 @@ public interface OrderMapper {
     Long findVisitsNumberAfterDate(String monday);
 
     List<Map<String,Object>> findHotSetmeal();
+
+    void deleteByMemberId(int id);
+
+    List<Order> findByMemberId(int memberId);
 }

@@ -23,4 +23,6 @@ public interface CheckGroupService {
     void deleteById(int id);
 
     List<CheckGroup> findAll();
+
+    List<CheckGroup> findBySetmealId(Integer setmealId);
 }

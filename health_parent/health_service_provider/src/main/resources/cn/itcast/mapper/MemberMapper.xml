@@ -40,4 +40,72 @@
     <select id="findThisMonthNewMember" parameterType="String" resultType="Long">
         SELECT count(*) FROM t_member where regTime &gt;= #{value}
     </select>
+
+    <!--会员分页查询-->
+    <select id="findPage" parameterType="String" resultType="cn.itcast.pojo.Member">
+        SELECT * FROM t_member
+        <if test="value != null and value.length > 0">
+            WHERE name LIKE #{value} or phoneNumber LIKE #{value}
+        </if>
+    </select>
+
+    <!--删除会员-->
+    <delete id="deleteMemberById" parameterType="int">
+        DELETE FROM t_member WHERE id = #{id}
+    </delete>
+
+    <!--根据id查询-->
+    <select id="findMemberById" parameterType="int" resultType="cn.itcast.pojo.Member">
+        SELECT * FROM t_member WHERE id =#{id}
+    </select>
+
+    <!--修改会员信息-->
+    <update id="update" parameterType="cn.itcast.pojo.Member">
+        UPDATE t_member 
+        <set>
+            <if test="fileNumber != null">
+                fileNumber = #{fileNumber},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="idCard != null">
+                idCard = #{idCard},
+            </if>
+            <if test="phoneNumber != null">
+                phoneNumber = #{phoneNumber},
+            </if>
+            <if test="regTime != null">
+                regTime = #{regTime},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="remark != null">
+                remark = #{remark}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!--根据ids查询member-->
+    <select id="findMemberByIds" parameterType="list" resultType="cn.itcast.pojo.Member">
+        SELECT * FROM t_member
+        <where>
+            <if test="array != null and array.length > 0">
+                <foreach collection="array" open=" id in ( " close=" ) " item="id" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -24,4 +24,6 @@ public interface CheckItemMapper {
     void updateCheckItem(CheckItem checkItem);
 
     List<CheckItem> findAll();
+
+    List<CheckItem> findByCheckGroupId(Integer checkGroupId);
 }

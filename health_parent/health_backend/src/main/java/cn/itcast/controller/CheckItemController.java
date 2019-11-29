@@ -60,8 +60,8 @@ public class CheckItemController {
      * @param id
      * @return
      */
-    @PreAuthorize("hasAuthority('CHECKITEM_DELETE')")
     @RequestMapping("/deleteItem")
+    @PreAuthorize("hasAuthority('CHECKITEM_DELETE')")
     public Result deleteItem(int id){
         try {
             checkItemService.deleteItem(id);

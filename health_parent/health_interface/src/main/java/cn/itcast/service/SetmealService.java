@@ -21,4 +21,5 @@ public interface SetmealService {
 
     List<Map<String,Object>> findSetmealCount();
 
+    Setmeal findByOrderId(Integer id);
 }

@@ -31,28 +31,28 @@
     <update id="updateCheckItem" parameterType="cn.itcast.pojo.CheckItem">
         UPDATE t_checkitem
         <set>
-            <if test=" name != null ">
+            <if test=" code != null ">
                 code = #{code},
             </if>
             <if test=" name != null ">
                 name = #{name},
             </if>
-            <if test=" name != null ">
+            <if test=" sex != null ">
                 sex = #{sex},
             </if>
-            <if test=" name != null ">
+            <if test=" age != null ">
                 age = #{age},
             </if>
-            <if test=" name != null ">
+            <if test=" price != null ">
                 price = #{price},
             </if>
-            <if test=" name != null ">
+            <if test=" type != null ">
                 type = #{type},
             </if>
-            <if test=" name != null ">
+            <if test=" attention != null ">
                 attention = #{attention},
             </if>
-            <if test=" name != null ">
+            <if test=" remark != null ">
                 remark = #{remark}
             </if>
         </set>
@@ -62,7 +62,6 @@
     <select id="findAll" resultType="cn.itcast.pojo.CheckItem">
         SELECT * FROM t_checkitem
     </select>
-
     <select id="findByCheckGroupId" parameterType="int" resultType="cn.itcast.pojo.CheckItem">
         SELECT * FROM t_checkitem WHERE id IN (SELECT checkitem_id FROM t_checkgroup_checkitem WHERE checkgroup_id = #{checkGroupId})
     </select>

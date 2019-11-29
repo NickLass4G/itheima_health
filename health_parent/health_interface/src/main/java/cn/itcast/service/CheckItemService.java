@@ -22,4 +22,6 @@ public interface CheckItemService {
     void update(CheckItem checkItem);
     //查询所有检查项
     List<CheckItem> findAll();
+    //根据检查组id查询检查项
+    List<CheckItem> findByCheckGroupId(Integer checkGroupId);
 }

@@ -107,6 +107,16 @@ public class CheckGroupServiceImpl implements CheckGroupService {
         return checkGroupMapper.findAll();
     }
 
+    /**
+     * 8.根据套餐id查询检查组
+     * @param setmealId
+     * @return
+     */
+    @Override
+    public List<CheckGroup> findBySetmealId(Integer setmealId) {
+        return checkGroupMapper.findCheckGroupBySetmeaId(setmealId);
+    }
+
     /*
     * 新建检查组时同时向关联表中插入记录
     * */
